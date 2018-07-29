@@ -30,7 +30,6 @@ function getRow(a) {
     .split('\n')
     .map(a => a.trim());
   return {
-    icon: clean[0],
     name: cleanName(clean[1]),
     ticker: getTicker(clean[1]),
     price: parseFloat(clean[2].substring(1)),
@@ -59,9 +58,17 @@ request(url, (err, res, body) => {
       .filter(row => {
         return row.minWorth >= params.minWorth && row.roi >= params.roi;
       })
+      .map(a => {
+        console.log(a);
+        return a;
+      })
       .reduce((s, a) => s + 1, 0);
 
-    console.log(result);
+    console.log(
+      `\nThere are ${result}/${rows.length} coins with at least $${params.minWorth} min worth and ${
+        params.roi
+      }% ROI.`
+    );
   } else {
     console.log('error');
   }
